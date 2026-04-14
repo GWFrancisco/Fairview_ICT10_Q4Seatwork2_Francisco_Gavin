@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade 10 Classmates System</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; display: flex; flex-direction: column; align-items: center; padding: 40px; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); width: 100%; max-width: 900px; margin-bottom: 20px; }
+        .header { text-align: center; margin-bottom: 30px; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #dee2e6; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+        .btn-group { display: flex; gap: 15px; margin-top: 15px; }
+        button { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 600; transition: opacity 0.2s; }
+        .btn-add { background-color: #007bff; color: white; }
+        .btn-show { background-color: #198754; color: white; }
+        button:hover { opacity: 0.9; }
+        #list-section { display: none; } /* Hidden by default */
+        .list-content { line-height: 1.8; color: #333; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📘 Grade 10 Classmates System</h1>
+        <p style="color: #666;">Add and view your classmates easily</p>
+    </div>
+
+    <div class="card">
+        <input type="text" id="nameInput" placeholder="Name">
+        <input type="text" id="sectionInput" placeholder="Section">
+        <input type="text" id="subjectInput" placeholder="Favorite Subject">
+        
+        <div class="btn-group">
+            <button class="btn-add" onclick="addNewClassmate()">Add Classmate</button>
+            <button class="btn-show" onclick="toggleList()">Show List</button>
+        </div>
+    </div>
+
+    <div class="card" id="list-section">
+        <h2 style="font-size: 1.2rem;">📋 Classmate List</h2>
+        <hr style="border: 0.5px solid #eee; margin: 15px 0;">
+        <div id="classmateDisplay" class="list-content">
+            </div>
+    </div>
+
+    <script>
+        // The Class definition
+        class Classmate {
+            constructor(name, section, favoriteSubject) {
+                this.name = name;
+                this.section = section;
+                this.favoriteSubject = favoriteSubject;
+            }
+
+            introduce() {
+                return `Hi! I am ${this.name} from ${this.section}. My favorite subject is ${this.favoriteSubject}.`;
+            }
+        }
+
+        // Initialize with 5 classmates as requested
+        let classmates = [
+            new Classmate("Kristine", "10-Emerald", "Math"),
+            new Classmate("Jean", "10-Sapphire", "Science"),
+            new Classmate("Hariette", "10-Ruby", "English"),
+            new Classmate("Jubilee", "10-Topaz", "Math"),
+            new Classmate("Vivian", "10-Emerald", "Social Studies")
+        ];
+
+        function addNewClassmate() {
+            const name = document.getElementById('nameInput').value;
+            const section = document.getElementById('sectionInput').value;
+            const subject = document.getElementById('subjectInput').value;
+
+            if (name && section && subject) {
+                const newStudent = new Classmate(name, section, subject);
+                classmates.push(newStudent);
+                
+                // Clear inputs
+                document.getElementById('nameInput').value = '';
+                document.getElementById('sectionInput').value = '';
+                document.getElementById('subjectInput').value = '';
+                
+                alert("Classmate added successfully!");
+                renderList(); // Update the list content in the background
+            } else {
+                alert("Please fill in all boxes.");
+            }
+        }
+
+        function renderList() {
+            const display = document.getElementById('classmateDisplay');
+            display.innerHTML = ""; // Clear current view
+            
+            // Loop to display all introductions
+            classmates.forEach(student => {
+                const p = document.createElement('p');
+                p.textContent = student.introduce();
+                display.appendChild(p);
+            });
+        }
+
+        function toggleList() {
+            const section = document.getElementById('list-section');
+            if (section.style.display === "none" || section.style.display === "") {
+                renderList();
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
